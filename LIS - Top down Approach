@@ -1,0 +1,38 @@
+int DP[10000];
+    int utility(vector<int> &nums,int curr_len,int index)
+    {
+        if(index>=nums.size()-1)
+            return 0;
+        int maxa = 0;
+        for(int i=index;i<nums.size();i++)
+        {
+            if(curr_len==0)
+            {
+                if(DP[i]==-1)
+                    DP[i] = max(1,1+utility(nums,curr_len+1,i));
+            }
+            else if(nums[i]>nums[index])
+            {
+                if(DP[i]==-1)
+                    DP[i] = max(1,1+utility(nums,curr_len+1,i));
+                maxa = max(maxa,DP[i]);
+            }
+        }
+        return maxa;
+    }
+    int lengthOfLIS(vector<int>& nums) 
+    {
+        memset(DP, -1, sizeof(DP));
+        int maxlen = 0;
+        if(nums.size()==1)
+            return 1;
+        utility(nums,0,0);
+        for(int i=0;i<1000;i++)
+        {
+            if(DP[i]!=-1)
+                cout<<i<<" "<<DP[i]<<endl;
+            if(maxlen<DP[i])
+                maxlen = DP[i];
+        }
+        return maxlen;
+    }
