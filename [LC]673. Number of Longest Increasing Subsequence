@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int lenofLIS(vector<int> &nums)
+    {
+        int n = nums.size(),maxa=0;
+        int dp[n];
+        memset(dp,0,sizeof(dp));
+        dp[n-1]=1;
+        for(int i=n-2;i>=0;i--)
+        {
+            maxa=1;
+            for(int j=i+1;j<n;j++)
+            {
+                if(nums[j]>nums[i])
+                    maxa = max(maxa,1+dp[j]);
+            }
+            dp[i] = maxa;
+        }
+        maxa=0;
+        for(int i=0;i<n;i++)
+        {
+            if(dp[i]>maxa)
+                maxa = dp[i];
+        }
+        return maxa;
+    }
+    int findNumberOfLIS(vector<int>& nums) {
+        if(nums.size()==0)
+            return 0;
+        int k = lenofLIS(nums);
+        int n = nums.size(),count=0;
+        int dp[k][n];
+        for(int i=0;i<n;i++)
+            dp[0][i] = 1;
+        for(int i=1;i<k;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                count = 0;
+                for(int k=j-1;k>=0;k--)
+                {
+                    if(nums[k]<nums[j])
+                        count += dp[i-1][k];
+                }
+                dp[i][j] = count;
+            }
+        }
+        count=0;
+        for(int i=0;i<n;i++)
+        {
+            count+= dp[k-1][i];
+        }
+        return count;
+    }
+};
