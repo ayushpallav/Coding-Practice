@@ -1,0 +1,66 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct city{
+	int north,south;
+};
+int max(int a,int b)
+{
+	if(a>b)
+		return a;
+	return b;
+}
+bool myComp(city a,city b)
+{
+	if(a.south==b.south)
+		return a.north<b.north;
+	return a.south<b.south;
+}
+int cBridge(int* t,int* b,int n)
+{
+	city arr[n];
+	for(int i=0;i<n;i++)
+	{
+		arr[i].north = t[i];
+		arr[i].south = b[i];
+	}
+	sort(arr,arr+n,myComp);
+	int maxa = 0;
+	int dp[n];
+	for(int i=0;i<n;i++)
+		dp[i] = 0;
+	dp[n-1] = 1;
+	for(int i=n-2;i>=0;i--)
+	{
+		maxa = 1;
+		for(int j=i+1;j<n;j++)
+		{
+			if(arr[j].north>=arr[i].north)
+				maxa = max(maxa,dp[j]+1);
+		}
+		dp[i] = maxa;
+	}
+	maxa=0;
+	for(int i=0;i<n;i++)
+	{
+		if(maxa<dp[i])
+			maxa = dp[i];
+	}
+	return maxa;
+}
+int main() {
+	
+	int t,n;
+	cin>>t;
+	while(t--)
+	{
+		cin>>n;
+		int* t = new int[n];
+		int* b = new int[n];
+		for(int i=0;i<n;i++)
+			cin>>t[i];
+		for(int i=0;i<n;i++)
+			cin>>b[i];
+		cout<<cBridge(t,b,n)<<endl;
+	}
+	return 0;
+}
