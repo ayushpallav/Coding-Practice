@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+using namespace std;
+int min(int a,int b)
+{
+    if(a<b)
+        return a;
+    return b;
+}
+int SUS(string s,int row,string t,int col)
+{
+    int dp[row+1][col+1];
+    for(int i=0;i<=col;i++)
+        dp[0][i] = -1;
+    for(int i=1;i<=row;i++)
+        dp[i][0] = 1;
+    for(int i=1;i<=row;i++)
+    {
+        for(int j=1;j<=col;j++)
+        {
+            char ch = s[i-1];
+            int k = j-1;
+            for(;k>=0;k--)
+            {
+                if(t[k]==ch)
+                    break;
+            }
+            if(k==-1)
+                dp[i][j] = 1;
+            else
+            {
+                int a = dp[i-1][k] + 1;
+                int b = dp[i-1][j];
+                if(b==-1 && a>0)
+                    dp[i][j] = a;
+                else 
+                    dp[i][j] = min(a,b);
+            }
+        }
+    }
+    return dp[row][col];
+}
+int main()
+{
+    int t,n,m;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n>>m;
+        string s,t;
+        cin>>s>>t;
+        cout<<SUS(s,n,t,m)<<endl;
+    }
+    return 0;
+}
