@@ -1,0 +1,19 @@
+int largestArea(int* A,int n)
+{
+    int temp,area, maxArea = INT_MIN,i=0;
+    stack<int> s;
+    s.push(-1);
+    while(i<=n)
+    {
+        if(i<n && s.top()==-1 || A[s.top()]<=A[i])
+            s.push(i++);
+        else
+        {
+            temp = s.top();
+            s.pop();
+            area = A[temp] * (i-1-s.top());
+            maxArea = max(maxArea,area);
+        }
+    }
+    return maxArea;
+}
