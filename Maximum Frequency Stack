@@ -1,0 +1,46 @@
+class FreqStack {
+public:
+
+    map<int,int> counter;
+    map<int,stack<int>> st;
+    FreqStack() 
+    {
+    }
+    
+    void push(int x) 
+    {
+        auto it = counter.find(x);
+        if(it==counter.end())
+        {
+            counter[x] = 1;
+            st[1].push(x);
+        }
+        else
+        {
+            it->second++;
+            st[it->second].push(x);
+        }
+    }
+    
+    int pop() 
+    {
+        int temp;
+        auto it = st.end();
+        it--;
+        temp = it->second.top();
+        it->second.pop();
+        counter[temp]--;
+        if(counter[temp]==0)
+            counter.erase(temp);
+        if(it->second.empty())
+            st.erase(it);
+        return temp;
+    }
+};
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * FreqStack obj = new FreqStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ */
